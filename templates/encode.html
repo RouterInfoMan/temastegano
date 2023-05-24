@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/image/encode" method="post" enctype="multipart/form-data">
+    <input type="text" name="message" value="Mesaj"/>
+    <input type="file" name="file-encode"/>
+    <button type="submit">Submit</button>
+</form>
+{% if image != None %}
+    <img src="data:image/png;base64,{{ image | safe }}">
+{% endif %}
+{% endblock %}
