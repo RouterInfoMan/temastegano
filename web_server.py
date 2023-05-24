@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, send_file, redirect
-from werkzeug.wsgi import wrap_file
 from PIL import Image
 import base64
 import io
@@ -9,11 +8,14 @@ app = Flask(__name__)
 
 last_encoded_img = None
 last_decoded_img = None
-
+redirect_string = None
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    global redirect_string
+    temp = redirect_string
+    redirect_string = None
+    return render_template('index.html', redirect_string = temp)
 
 @app.route('/image/encode', methods = ['POST', 'GET'])
 def image_encode():
@@ -36,6 +38,8 @@ def image_encode():
 @app.route('/image/last/encoded')
 def last_encoded():
    if last_encoded_img == None:
+       global redirect_string
+       redirect_string = "No last encoded image!"
        return redirect('/')
    return send_file(io.BytesIO(last_encoded_img), as_attachment=True, download_name="last_encoded_image.png", mimetype='image/png')
 
@@ -59,9 +63,11 @@ def image_decode():
 @app.route('/image/last/decoded')
 def last_decoded():
     if last_decoded_img == None:
+       global redirect_string
+       redirect_string = "No last decoded image!"
        return redirect('/')
     return send_file(io.BytesIO(last_decoded_img), as_attachment=True, download_name="last_decoded_image.png", mimetype='image/png')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=80)

@@ -1,3 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% if redirect_string != None %}
+<h1>{{ redirect_string }}</h1>
+{% endif %}
 {% endblock %}

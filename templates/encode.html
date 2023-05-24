@@ -6,6 +6,8 @@
     <button type="submit">Submit</button>
 </form>
 {% if image != None %}
-    <img src="data:image/png;base64,{{ image | safe }}">
+<div class="box">
+    <img class="image-fluid" src="data:image/png;base64,{{ image | safe }}">
+</div>
 {% endif %}
 {% endblock %}

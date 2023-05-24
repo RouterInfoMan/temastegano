@@ -2,11 +2,11 @@
 {% block content %}
 <form action="/image/decode" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="exampleFormControlFile1">Upload file</label>
+        <label>Upload image! Must be PNG!</label>
         <input type="file" class="form-control-file" name="file-decode">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+</form>
 {% if mesaj != "" %}
     <h1>Mesajul este: {{ mesaj }}</h1>
 {% endif %}
