@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, redirect
+from flask import Flask, render_template, request, send_file, redirect, make_response
 from PIL import Image
 import base64
 import io
@@ -7,7 +7,7 @@ import stegano
 app = Flask(__name__)
 
 last_encoded_img = None
-last_decoded_img = None
+last_decoded_string = None
 redirect_string = None
 
 @app.route('/')
@@ -41,7 +41,8 @@ def last_encoded():
        global redirect_string
        redirect_string = "No last encoded image!"
        return redirect('/')
-   return send_file(io.BytesIO(last_encoded_img), as_attachment=True, download_name="last_encoded_image.png", mimetype='image/png')
+   return send_file(io.BytesIO(last_encoded_img), as_attachment=True, download_name="last_encoded_image.png", mimetype='application/octet-stream')
+
 
 
 @app.route('/image/decode', methods = ['POST', 'GET'])
@@ -54,19 +55,22 @@ def image_decode():
         # Tell PIL to save as PNG into buffer
         img.save(buffer, 'PNG')
         PNG = buffer.getvalue()
-        global last_decoded_img
-        last_decoded_img = PNG
+        global last_decoded_string
+        last_decoded_string = out
         return render_template('decode.html', mesaj= out)
     if request.method == "GET":
         return render_template('decode.html', mesaj = "")
       
 @app.route('/image/last/decoded')
 def last_decoded():
-    if last_decoded_img == None:
+    if last_decoded_string == None:
        global redirect_string
        redirect_string = "No last decoded image!"
        return redirect('/')
-    return send_file(io.BytesIO(last_decoded_img), as_attachment=True, download_name="last_decoded_image.png", mimetype='image/png')
+    else:
+        response = make_response(last_decoded_string, 200)
+        response.mimetype = "text/plain"
+        return response
 
 
 if __name__ == '__main__':
