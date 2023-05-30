@@ -46,8 +46,6 @@ def stegano_encrypt(image, message):
     pixels = list()
     for x in px:
         y = list(x)
-        if len(y) == 4:
-            y.pop()
         pixels.append(list(y))
     index = 0
     channel = 0
@@ -65,7 +63,7 @@ def stegano_encrypt(image, message):
             channel = 0
             index = index + 1
     arr = np.array(pixels, dtype=np.uint8)
-    original_img_arr = arr.reshape(img.size[1], img.size[0], 3)
+    original_img_arr = arr.reshape(img.size[1], img.size[0], 4)
     original_img_arr = np.transpose(original_img_arr, (0, 1, 2))
     out_img = Image.fromarray(original_img_arr)
     return out_img
