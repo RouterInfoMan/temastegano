@@ -21,7 +21,7 @@ def index():
 def image_encode():
     if request.method == "POST":
         message = request.form['message']
-        file = request.files['file-encode']
+        file = request.files['file']
         out_image = stegano.stegano_encrypt(file, message)
         buffer = io.BytesIO()
         # Tell PIL to save as PNG into buffer
@@ -48,7 +48,7 @@ def last_encoded():
 @app.route('/image/decode', methods = ['POST', 'GET'])
 def image_decode():
     if request.method == "POST":
-        file = request.files['file-decode']
+        file = request.files['file']
         out = stegano.stegano_decrypt(file)
         img = Image.open(file)
         buffer = io.BytesIO()

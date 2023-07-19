@@ -2,7 +2,7 @@
 {% block content %}
 <form action="/image/encode" method="post" enctype="multipart/form-data">
     <input type="text" name="message" value="Mesaj"/>
-    <input type="file" name="file-encode"/>
+    <input type="file" name="file"/>
     <button type="submit">Submit</button>
 </form>
 {% if image != None %}
